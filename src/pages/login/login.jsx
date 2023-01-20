@@ -1,15 +1,95 @@
 import React, { Component } from 'react'
 import style from './login.less'
-import logo from './images/logo.png'
-import { Button, Checkbox, Form, Input } from 'antd';
+import logo from '../../assets/images/logo.png'
+import { Button, Checkbox, Form, Input, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-export default class Login extends Component {
+import { reqLogin } from '../../api/api';
+import memoryUtils from '../../utils/memoryUtils';
+import storageUtils from '../../utils/storageUtils';
+// import { useNavigate } from "react-router-dom";
+import { createBrowserHistory } from 'history'
 
-  onFinish = (event) => {
-    // 得到form对象
+import { Navigate } from 'react-router-dom';
+// https://segmentfault.com/a/1190000041700003
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
+
+// function withRouter(Component) {
+//   function ComponentWithRouterProp(props) {
+//     let location = useLocation();
+//     let navigate = useNavigate();
+//     let params = useParams();
+//     return (
+//       <Component
+//         {...props}
+//         router={{ location, navigate, params }}
+//       />
+//     );
+//   }
+
+//   return ComponentWithRouterProp;
+// }
+
+// const history = createBrowserHistory();
+
+
+// https://blog.csdn.net/liyonghong3333/article/details/124969089
+
+// import { useNavigate } from 'react-router-dom'
+// 高阶组件包装useNavigate()功能
+// 原因：类组件中无法使用useNavigate()，会报错
+// React Hook "useNavigate" cannot be called in a class component.
+function widthUseNavigate(WrapCompontent) {
+  // 设置别名
+  WrapCompontent.displayName = `widthUseNavigate${getDisplayName(WrapCompontent)}`
+  return function NavigateCompont() {
+    const navigate = useNavigate()
+    // 给传入的组件新增一个to方法，传给原始组件的props，在原始组件中通过this.props.to(参数)使用
+    return <WrapCompontent navigate={navigate}></WrapCompontent>
+  }
+}
+ 
+// 别名
+function getDisplayName(WrapCompontent) {
+  return WrapCompontent.displayname || WrapCompontent.name || 'Component'
+}
+
+class Login extends Component {
+
+  onFinish = async (value) => {
     console.log('点击了submit按钮')
-    console.log(this)
-    console.log(event)
+
+    const {username, password} = value
+    // const navigate = useNavigate()
+    
+    const regValue = await reqLogin(username, password)
+    console.log(regValue)
+    // console.log('Login onFinish:', regValue)
+    if ( regValue && (regValue.status === 0 ||regValue.status === 200) &&(regValue.data.status === 0) ) {
+      message.info('登录成功')
+
+      //保存user
+      let user = regValue.data.data
+      memoryUtils.user = user
+      storageUtils.saveUser(user)
+      console.log('user: ', user)
+      console.log('memoryUtils: ', memoryUtils)
+      this.props.navigate('/')
+    }
+
+    // let p = reqLogin(username, password)
+    // p.then(value => {
+    //   console.log('get feedback in on Finish')
+    //   console.log(value)
+    // }).catch(
+    //   reason => {console.log(reason)}
+    // )
+    
+    console.log('当前组件 this ',this)
+    // console.log(value)
     // const form = this.props.form
     // // // 获取表单项的输入数据
     // const values = form.getFieldsValue()
@@ -59,6 +139,10 @@ export default class Login extends Component {
   render() {
     console.log("in login page")
     console.log(style)
+    const user = memoryUtils.user
+    if(user && user._id) {
+      return <Navigate to='/'/>
+    }
     return (
       <div className='login'>
         <header className="login-header">
@@ -123,3 +207,11 @@ export default class Login extends Component {
     )
   }
 }
+
+// https://github.com/faimi/my-react/blob/master/src/pages/login/Login.js
+// export default withRouter(Login);
+
+// 使用高阶组件包裹当前类组件
+const NavigateCompont = widthUseNavigate(Login)
+// 导出包裹后的类组件
+export default NavigateCompont

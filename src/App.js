@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 
 
+import { createBrowserHistory } from "history";
 import Login from "./pages/login/login";
 import Admin from "./pages/admin/admin";
 
@@ -62,6 +63,7 @@ import Admin from "./pages/admin/admin";
 //   }
 // }
 
+const history = createBrowserHistory();
 
 export default class App extends Component {  
 
@@ -79,9 +81,9 @@ export default class App extends Component {
     
     return (
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Admin />}></Route>
-          <Route path="/Login" element={<Login />}></Route>
+        <Routes history={history}>
+          <Route path="/*" element={<Admin />}></Route>
+          <Route path="/login" element={<Login />}></Route>
         </Routes>
       </BrowserRouter>
       
