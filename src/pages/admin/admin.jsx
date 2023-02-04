@@ -47,7 +47,7 @@ export default class Admin extends Component {
           <Content style={{ backgroundColor: '#ccc'}}>
             <Routes>
               <Route path="home" element={<Home />}></Route>
-              <Route path="category" element={<Category />}></Route>
+              <Route path="/category" element={<Category />}></Route>
               <Route path="product" element={<Product />}></Route>
               <Route path="role" element={<Role />}></Route>
               <Route path="user" element={<User />}></Route>

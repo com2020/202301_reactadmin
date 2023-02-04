@@ -1,4 +1,5 @@
 import React from "react";
+import { HomeOutlined, AppstoreAddOutlined, MenuOutlined, FileOutlined, PieChartOutlined, UserOutlined, DesktopOutlined, TeamOutlined, BgColorsOutlined } from '@ant-design/icons';
 import { Menu } from "antd";
 import './index.less'
 import logo from '../../assets/images/logo.png'
@@ -8,66 +9,7 @@ import menuList from '../../config/menuConfig'
 
 // 
 export default class LeftNav extends React.Component {
-  // {
-  //   title: '首页', // 菜单标题名称
-  //   key: '/home', // 对应的path
-  //   icon: <HomeOutlined />, // 图标名称
-  //   isPublic: true, // 公开的
-  // },
-  // {
-  //   title: '商品',
-  //   key: '/products',
-  //   icon: <AppstoreAddOutlined />,
-  //   children: [ // 子菜单列表
-  //     {
-  //       title: '品类管理',
-  //       key: '/category',
-  //       icon: <MenuOutlined />
-  //     },
-  //     {
-  //       title: '商品管理',
-  //       key: '/product',
-  //       icon: <MenuOutlined /> 
-  //     },
-  //   ]
-  // },
-
-  getMenuNodes = (menuList) => {
-    console.log('getMenuNodes')
-    console.log(menuList)
-    console.log(typeof menuList)
-    return menuList.map(item => {
-      if(!item.children){
-        return (
-          <Menu.Item key={item.key}>
-            <Link to={item.key}>
-              {item.icon}
-              <span>{item.title}</span>
-            </Link>
-          </Menu.Item>
-        )
-      }
-      else{
-        return(
-          <Menu.SubMenu key={item.key} title={item.title} icon={item.icon}>
-              {this.getMenuNodes(item.children)}
-          </Menu.SubMenu>
-        )
-      }
-    })            
-  }
-
-  
-  // componentWillUnmount(){
-  //   console.log('componentWillUnmount')
-  //   this.menuNodes = this.getMenuNodes(menuList)
-  //   console.log(this.menuNodes)
-  // }
-
   render(){
-    console.log('render')
-    console.log(menuList)
-    console.log(menuList.length)
     return (
       <div className="left-nav">
         <Link to="/" className="left-nav-header">
@@ -76,7 +18,47 @@ export default class LeftNav extends React.Component {
         </Link>
         
         <Menu mode="inline" theme="dark">
-          {this.getMenuNodes(menuList)}
+          
+            <Menu.Item key='/home'>
+              <Link to="/home">
+                <HomeOutlined />
+                <span>主页</span>
+              </Link>
+            </Menu.Item>
+         
+            <Menu.SubMenu key='sub1' icon={<AppstoreAddOutlined />} title={<span>商品</span>}>
+              
+              <Menu.Item key='/category'>
+                <Link to="/category">
+                  <MenuOutlined /> 
+                  <span>品类管理</span>
+                </Link>
+              </Menu.Item>
+             
+              <Menu.Item key='/product'>
+                <Link to="/product">
+                  <MenuOutlined />
+                  <span>商品管理</span>
+                </Link>
+              </Menu.Item>
+              
+            </Menu.SubMenu>
+
+            <Menu.Item key='/role'>
+              <Link to="/role">
+                <TeamOutlined />
+                <span>角色管理</span>
+              </Link>
+            </Menu.Item>
+         
+            <Menu.Item key='/user'>
+              <Link to="/user">
+                <UserOutlined />
+                <span>用户管理</span>
+              </Link>
+            </Menu.Item>
+         
+            
         </Menu>
       </div>
       // <div>测试看看能否通过</div>
