@@ -9,11 +9,10 @@ import LinkButton from "../../components/link-button";
 
 
 
-import { reqCategorys, reqAddCategory, reqUpdateCategory } from "../../api/api";
+import { reqCategorys } from "../../api/api";
 import AddForm from "./addform";
 import UpdateForm from "./updateform";
 import withRouter from "../../utils/withRouter";
-import cookieStorage from "store/storages/cookieStorage";
 
 class Category extends React.Component {
   state = {
@@ -99,11 +98,7 @@ class Category extends React.Component {
   }
 
   showUpdate = (category) => {
-    
     console.log('showUpdate')
-    
-    console.log(category)
-
     this.category = category;
     this.setState({ showStatus: 2 });
   }
@@ -112,59 +107,21 @@ class Category extends React.Component {
     this.setState({showStatus:0})
   }
 
-  addCategory = async () => {
-    const parentID = this.classes.value
-    const categoryName = this.input.input.value
+  addCategory = () => {
     console.log('click addCategory')
     // const parentId = this.classes.props.value;
     // const categoryName = this.input.props.value;
     this.setState({showStatus:0})
     console.log('category', this)
-    console.log('this.classes value', this.classes.value)
-    console.log('this.input', this.input.input.value)
-    // const categoryName = this.input.input.props.value;
-    // console.log('input value', categoryName )
-
-    if(categoryName){
-      message.error('输入不能为空')
-    }
-
-    const result = await reqAddCategory(categoryName, parentID)
-    if(result.status === 200 && result.data.state === 0){
-      this.getCategory()
-      message.success('添加分类成功')
-    } else {
-      message.error('添加分类失败')
-    }
-   
+    console.log('this.classes', this.classes)
+    console.log('this.input.input', this.input.input)
     
   }
 
-  updateCategory = async () => {
+  updataCategory = () => {
     
-    // const parentId = this.form.parentId
-    const categoryId = this.category._id
-    const categoryName = this.category.name
-
-    this.setState({showStatus:0})
     console.log('click updataCategory')
-    // console.log(categoryId, categoryName)
-    if(!categoryName){
-      message.error('名称不能为空')
-      return
-    }
-
-    const result = await reqUpdateCategory({categoryName, categoryId})
-    console.log(result)
-    if(result.status === 200 && result.data.status === 0){
-      this.getCategory()
-      message.success('修改成功')
-    }else{
-      message.error('修改失败')
-    }
-    
-
-    
+    this.setState({showStatus:0})
 
   }
 
@@ -182,7 +139,7 @@ class Category extends React.Component {
 
     const {categorys, loading, parentId, parentName, subCategorys, showStatus} = this.state
     
-    const category = this.category || {}; // 如果还没有,则空对象
+    
 
     // card 的左侧
     const title = parentId === '0' ? '一级分类列表' :(
@@ -215,17 +172,16 @@ class Category extends React.Component {
           open = {showStatus === 1 }
           onOk = {this.addCategory}
           onCancel = {this.hanldCancel}
+          
         >
           <AddForm
             categorys = {categorys}
             setClasses = {(classes) => {
-              // console.log('setClasses in Category this', this)
-              // console.log('setClasses in Category classes', classes)
               this.classes = classes
             }}
             setInput = { (input) => {
-              // console.log('setInput in Category this', this)
-              // console.log('setInput in Category input', input)
+              console.log('setInput in Category this', this)
+              console.log('setInput in Category input', input)
               this.input = input
             }}>  
           </AddForm>
@@ -234,16 +190,10 @@ class Category extends React.Component {
         <Modal
           title = '修改分类' 
           open = {showStatus === 2 }
-          onOk = {this.updateCategory}
+          onOk = {this.updataCategory}
           onCancel = {this.hanldCancel}
-          destroyOnClose={true} //让对话框关闭时候清空输入值
         >
-          <UpdateForm
-            category = {category.name}
-            setForm = { (form) => {
-              this.form = form;
-            }}
-          ></UpdateForm>
+          <UpdateForm></UpdateForm>
         </Modal>
       </Card>
       

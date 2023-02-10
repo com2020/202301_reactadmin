@@ -9,6 +9,7 @@ import {ConfigProvider} from 'antd'
 import storageUtils from "./utils/storageUtils";
 import memoryUtils from "./utils/memoryUtils";
 
+
 const user = storageUtils.getUser()
 memoryUtils.user = user
 

@@ -46,9 +46,9 @@ import { configConsumerProps } from 'antd/es/config-provider'
 // 返回时，已经讲异步请求，等待到同步返回的结果。
 // 返回值：value 不是 Promise对象
 export default async function ajax(url='', data={}, type='GET'){
-  // console.log('ajax', url)
-  // console.log('ajax', data)
-  // console.log('ajax', type)
+  console.log('ajax', url)
+  console.log('ajax', data)
+  console.log('ajax', type)
   try {
     if(type === 'GET'){
       return await axios.get(url, {

@@ -15,9 +15,9 @@ import User from '../user/user';
 import Bar from '../charts/bar';
 import Pie from '../charts/pie';
 
+
 // import { PieChartOutlined } from '@ant-design/icons'
 const {Content, Footer, Sider } = Layout;
-
 
 export default class Admin extends Component {
   // constructor(){
@@ -54,7 +54,7 @@ export default class Admin extends Component {
               <Route path="charts/line" element={<Line />}></Route>
               <Route path="charts/bar" element={<Bar />}></Route>
               <Route path="charts/pie" element={<Pie />}></Route>
-              <Route path="/" element={<Navigate to="/category" replace></Navigate>}></Route>
+              <Route path="/" element={<Navigate to="/home" replace></Navigate>}></Route>
               
             </Routes>
           </Content>
@@ -64,7 +64,6 @@ export default class Admin extends Component {
     )
   }
 }
-
 // // 以下使用了antd的Layout的布局，其中Sider等都已经实现了逻辑，但尝试着自己实现一遍。
 // export default class Admin extends Component {
 //   // constructor(){
